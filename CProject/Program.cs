@@ -1,4 +1,29 @@
+using CProject.Event;
+using DomainShare;
+using MassTransit;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+var bussConnection = builder.Configuration["AzureServiceBusConnection"];
+
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+    
+    x.UsingAzureServiceBus((context, config) =>
+    {
+        config.Host(bussConnection);
+        config.UseServiceBusMessageScheduler();
+        
+        config.SubscriptionEndpoint("Iman-Subscription","Iman-Topic", e =>
+        {
+           e.ConfigureConsumer<Consumer>(context);
+        });
+    });
+
+    x.AddConsumer<Consumer>();
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
