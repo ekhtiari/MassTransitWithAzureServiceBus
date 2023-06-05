@@ -1,5 +1,6 @@
 using DomainShare;
 using MassTransit;
+using PProject.Log;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,14 @@ builder.Services.AddMassTransit(x =>
         
         config.Message<Contact>(y =>
         {
-            y.SetEntityName("Iman-Topic");
+            y.SetEntityName("ComplyAdvantage-Topic");
+        });
+        config.Message<Order>(y =>
+        {
+            y.SetEntityName("Order-Topic");
         });
     });
+    x.AddConsumer<LogEvent>();
 });
 
 // Add services to the container.

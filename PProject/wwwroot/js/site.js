@@ -1,4 +1,21 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function addNewContact(){
+    $.ajax({
+        url:'/Contact/Index/',
+        success:function(e){
+            if(e==="ok"){
+                $("#result").text("new contact added");
+            }
+        }
+    })
+}
 
-// Write your JavaScript code.
+function addNewOrder(){
+    $.ajax({
+        url:'/Order/Index/',
+        success:function(e){
+            if(e==="ok"){
+                $("#result").text("new order added");
+            }
+        }
+    })
+}

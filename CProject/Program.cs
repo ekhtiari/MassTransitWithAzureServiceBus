@@ -16,7 +16,7 @@ builder.Services.AddMassTransit(x =>
         config.Host(bussConnection);
         config.UseServiceBusMessageScheduler();
         
-        config.SubscriptionEndpoint("Iman-Subscription","Iman-Topic", e =>
+        config.SubscriptionEndpoint("ComplyAdvantage-Subscription","ComplyAdvantage-Topic", e =>
         {
            e.ConfigureConsumer<Consumer>(context);
         });
