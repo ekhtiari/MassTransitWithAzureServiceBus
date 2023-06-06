@@ -19,3 +19,13 @@ function addNewOrder(){
         }
     })
 }
+
+function getResult(){
+    $.ajax({
+        url:'/Contact/GetContactState/',
+        data:{'family': $("#txtFamily").val()},
+        success:function(e){
+            $("#result").text(e);
+        }
+    })
+}

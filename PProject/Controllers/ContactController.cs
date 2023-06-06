@@ -9,7 +9,7 @@ public class ContactController : Controller
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
-    private IRequestClient<Contact> _requestClient;
+    private readonly IRequestClient<Contact> _requestClient;
     public ContactController(IPublishEndpoint publishEndpoint, IRequestClient<Contact> requestClient)
     {
         _publishEndpoint = publishEndpoint;
@@ -24,9 +24,9 @@ public class ContactController : Controller
         return Json("ok");
     }
 
-    public async Task<JsonResult> GetContactState(string famili,CancellationToken cancellationToken)
+    public async Task<JsonResult> GetContactState(string family,CancellationToken cancellationToken)
     {
-        var response =await _requestClient.GetResponse<ContactRiskResponse>(new { Famili = famili }, cancellationToken);
+        var response =await _requestClient.GetResponse<ContactRiskResponse>(new { Famili = family }, cancellationToken);
         var result = response.Message.ContactStatus.ToString();
         return Json(response);
     }

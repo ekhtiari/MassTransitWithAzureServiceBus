@@ -27,6 +27,7 @@ builder.Services.AddMassTransit(x =>
         });
     });
     x.AddConsumer<LogEvent>();
+    x.AddRequestClient<Contact>(new Uri("ComplyAdvantage-Topic"));
 });
 
 // Add services to the container.
