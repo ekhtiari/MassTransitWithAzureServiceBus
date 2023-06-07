@@ -2,17 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    
-  
-    <button type="button" class="btn btn-info" onclick="addNewContact()">Add New Contact</button>
-    <button type="button" class="btn btn-info" onclick="addNewOrder()">Add New Order</button>
-</div>
-<div class="text-center">
-    <input placeholder="type Family for check risk" id="txtFamily" />
-    <button class="btn btn-info" onclick="getResult()">Result</button>
-</div>
 
-<div class="text-center">
-    <p id="result"></p>
+<div class="col-md-4">
+
+
+    <table class="table table-hover">
+        <tr>
+            <td>Between two service</td>
+            <td colspan="2">
+                <button type="button" class="btn btn-info" onclick="addNewContact()">Add New Contact</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Inside One service</td>
+            <td colspan="2">
+                <button type="button" class="btn btn-info" onclick="addNewOrder()">Add New Order</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Send/Request
+            </td>
+            <td>
+                <input placeholder="type Family for check risk" id="txtFamily"/>
+            </td>
+            <td>
+                <button class="btn btn-info" onclick="getResult()">Result</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Result
+            </td>
+            <td colspan="2">
+                <p id="result"></p>
+            </td>
+        </tr>
+    </table>
 </div>

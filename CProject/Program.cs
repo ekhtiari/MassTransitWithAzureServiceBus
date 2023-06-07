@@ -20,6 +20,7 @@ builder.Services.AddMassTransit(x =>
         {
            e.ConfigureConsumer<Consumer>(context);
         });
+        
     });
 
     x.AddConsumer<Consumer>();
