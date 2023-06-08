@@ -22,6 +22,7 @@ builder.Services.AddMassTransit(x =>
         });
     });
     x.AddConsumer<LogEvent>();
+   
 });
 
 // Add services to the container.

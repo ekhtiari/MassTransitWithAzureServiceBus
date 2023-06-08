@@ -11,24 +11,26 @@ var bussConnection = builder.Configuration["AzureServiceBusConnection"];
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
+    x.AddConsumer<ContactResponse>();
+    x.AddConsumer<Consumer>();
     
     x.UsingAzureServiceBus((context, config) =>
     {
         config.Host(bussConnection);
-       
+
         config.ReceiveEndpoint("Compliance_Advantage_Request_Queue", ep =>
         {
             ep.ConfigureConsumer<ContactResponse>(context);
         });
         
-        // config.SubscriptionEndpoint("ComplyAdvantage-Subscription","ComplyAdvantage-Topic", e =>
-        // {
-        //    e.ConfigureConsumer<Consumer>(context);
-        // });
+        config.SubscriptionEndpoint("ComplyAdvantage-Subscription","ComplyAdvantage-Topic", e =>
+        {
+           e.ConfigureConsumer<Consumer>(context);
+        });
         
     });
 
-    x.AddConsumer<ContactResponse>();
+   
 });
 
 
