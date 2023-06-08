@@ -9,10 +9,14 @@ public class ContactResponse:IConsumer<Contact>
 {
     public async Task Consume(ConsumeContext<Contact> context)
     {
+        var id = context.Message.Id;
+        var family = context.Message.Famili;
+        var status = family == "Wick" ? ContactStatus.Forbidden : ContactStatus.Active;
+        
         await context.RespondAsync<ContactRiskResponse>(new
         {
-            CpntactId= context.Message.Id,
-            Status = context.Message.Famili=="Wick"? ContactStatus.Forbidden: ContactStatus.Active
+            Id= id,
+            ContactStatus = status
         });
     }
 }

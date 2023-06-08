@@ -26,8 +26,9 @@ public class ContactController : Controller
 
     public async Task<JsonResult> GetContactState(string family,CancellationToken cancellationToken)
     {
-        var response =await _requestClient.GetResponse<ContactRiskResponse>(new { Famili = family }, cancellationToken);
+        var request = new Contact() { Id = Guid.NewGuid(), Famili = family };
+        var response =await _requestClient.GetResponse<ContactRiskResponse>(request, cancellationToken);
         var result = response.Message.ContactStatus.ToString();
-        return Json(response);
+        return Json(result);
     }
 }

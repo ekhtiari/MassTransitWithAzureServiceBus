@@ -1,4 +1,5 @@
 using CProject.Event;
+using CProject.Response;
 using DomainShare;
 using MassTransit;
 
@@ -14,17 +15,25 @@ builder.Services.AddMassTransit(x =>
     x.UsingAzureServiceBus((context, config) =>
     {
         config.Host(bussConnection);
-        config.UseServiceBusMessageScheduler();
-        
-        config.SubscriptionEndpoint("ComplyAdvantage-Subscription","ComplyAdvantage-Topic", e =>
+       
+        config.ReceiveEndpoint("Compliance_Advantage_Request_Queue", ep =>
         {
-           e.ConfigureConsumer<Consumer>(context);
+            ep.ConfigureConsumer<ContactResponse>(context);
         });
+        
+        // config.SubscriptionEndpoint("ComplyAdvantage-Subscription","ComplyAdvantage-Topic", e =>
+        // {
+        //    e.ConfigureConsumer<Consumer>(context);
+        // });
         
     });
 
-    x.AddConsumer<Consumer>();
+    x.AddConsumer<ContactResponse>();
 });
+
+
+builder.Services.AddMassTransitHostedService();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

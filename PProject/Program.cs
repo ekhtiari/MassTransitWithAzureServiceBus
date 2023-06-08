@@ -13,21 +13,15 @@ builder.Services.AddMassTransit(x =>
     x.UsingAzureServiceBus((context, config) =>
     {
         config.Host(bussConnection);
-        config.UseServiceBusMessageScheduler();
+       
         config.ConfigureEndpoints(context);
         
-        
-        config.Message<Contact>(y =>
-        {
-            y.SetEntityName("ComplyAdvantage-Topic");
-        });
         config.Message<Order>(y =>
         {
             y.SetEntityName("Order-Topic");
         });
     });
     x.AddConsumer<LogEvent>();
-    x.AddRequestClient<Contact>(new Uri(bussConnection+"/ComplyAdvantage_queue"));
 });
 
 // Add services to the container.
