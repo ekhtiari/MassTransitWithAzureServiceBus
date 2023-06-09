@@ -1,4 +1,5 @@
 ﻿using DomainShare;
+using DomainShare.RequestInformation;
 using DomainShare.Response;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public class ContactController : Controller
 
     public async Task<JsonResult> GetContactState(string family,CancellationToken cancellationToken)
     {
-        var request = new Contact() { Id = Guid.NewGuid(), Famili = family };
+        var request = new RequestInformation() { Id = Guid.NewGuid(), Family = family };
         var response =await _requestClient.GetResponse<ContactRiskResponse>(request, cancellationToken);
         var result = response.Message.ContactStatus.ToString();
         return Json(result);

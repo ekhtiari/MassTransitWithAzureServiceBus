@@ -20,6 +20,10 @@ builder.Services.AddMassTransit(x =>
         {
             y.SetEntityName("Order-Topic");
         });
+        config.Message<Contact>(y =>
+        {
+            y.SetEntityName("ComplyAdvantage-Topic");
+        });
     });
     x.AddConsumer<LogEvent>();
    
