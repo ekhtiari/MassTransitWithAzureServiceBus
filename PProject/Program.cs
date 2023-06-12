@@ -1,4 +1,5 @@
 using DomainShare;
+using DomainShare.RequestInformation;
 using MassTransit;
 using PProject.Log;
 
@@ -23,6 +24,10 @@ builder.Services.AddMassTransit(x =>
         config.Message<Contact>(y =>
         {
             y.SetEntityName("ComplyAdvantage-Topic");
+        });
+        config.Message<RequestInformation>(y =>
+        {
+            y.SetEntityName("ComplyAdvantage-Topic-Request_Information");
         });
     });
     x.AddConsumer<LogEvent>();

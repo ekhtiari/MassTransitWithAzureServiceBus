@@ -1,6 +1,7 @@
 using CProject.Event;
 using CProject.Response;
 using DomainShare;
+using DomainShare.RequestInformation;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +12,19 @@ var bussConnection = builder.Configuration["AzureServiceBusConnection"];
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
-    x.AddConsumer<ContactResponse>();
+    x.AddConsumer<ContactResponse>().Endpoint(cfg =>
+    {
+        cfg.Name = "Compliance_Advantage_Request_Queue";
+    });
     x.AddConsumer<Consumer>();
     
     x.UsingAzureServiceBus((context, config) =>
     {
         config.Host(bussConnection);
+        
+        config.ConfigureEndpoints(context);
 
-        config.ReceiveEndpoint("Compliance_Advantage_Request_Queue", ep =>
+        config.SubscriptionEndpoint("Compliance_Advantage_Request_Queue","ComplyAdvantage-Topic-Request_Information", ep =>
         {
             ep.ConfigureConsumer<ContactResponse>(context);
         });
@@ -29,7 +35,7 @@ builder.Services.AddMassTransit(x =>
         });
         
     });
-
+x.AddRequestClient<RequestInformation>();
    
 });
 
