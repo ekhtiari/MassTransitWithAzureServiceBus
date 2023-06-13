@@ -10,8 +10,8 @@ public class ContactController : Controller
 {
     private readonly IPublishEndpoint _publishEndpoint;
 
-    private readonly IRequestClient<Contact> _requestClient;
-    public ContactController(IPublishEndpoint publishEndpoint, IRequestClient<Contact> requestClient)
+    private readonly IRequestClient<RequestInformation> _requestClient;
+    public ContactController(IPublishEndpoint publishEndpoint, IRequestClient<RequestInformation> requestClient)
     {
         _publishEndpoint = publishEndpoint;
         _requestClient = requestClient;

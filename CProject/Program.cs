@@ -22,7 +22,6 @@ builder.Services.AddMassTransit(x =>
     {
         config.Host(bussConnection);
         
-        config.ConfigureEndpoints(context);
 
         config.SubscriptionEndpoint("Compliance_Advantage_Request_Queue","ComplyAdvantage-Topic-Request_Information", ep =>
         {
