@@ -8,27 +8,34 @@ namespace PProject.Controllers;
 
 public class ContactController : Controller
 {
-    private readonly IPublishEndpoint _publishEndpoint;
-
     private readonly IRequestClient<RequestInformation> _requestClient;
-    public ContactController(IPublishEndpoint publishEndpoint, IRequestClient<RequestInformation> requestClient)
+    private readonly IBus _bus;
+
+    public ContactController(IRequestClient<RequestInformation> requestClient, IBus bus)
     {
-        _publishEndpoint = publishEndpoint;
         _requestClient = requestClient;
+        _bus = bus;
     }
+
     // GET
     public async Task<IActionResult> Index()
     {
         var newContact = new Contact() { Id = Guid.NewGuid(), Name = "John", Famili = "Week", };
-
-        await _publishEndpoint.Publish(newContact);
+        await _bus.Publish(newContact);
         return Json("ok");
     }
 
-    public async Task<JsonResult> GetContactState(string family,CancellationToken cancellationToken)
+    public async Task<IActionResult> SendScheduledMessage()
+    {
+        var newContact = new Contact() { Id = Guid.NewGuid(), Name = "John", Famili = "Week", };
+        await _bus.Publish(newContact, config => { config.SetScheduledEnqueueTime(DateTime.Now.AddSeconds(10)); });
+        return Json("ok");
+    }
+
+    public async Task<JsonResult> GetContactState(string family, CancellationToken cancellationToken)
     {
         var request = new RequestInformation() { Id = Guid.NewGuid(), Family = family };
-        var response =await _requestClient.GetResponse<ContactRiskResponse>(request, cancellationToken);
+        var response = await _requestClient.GetResponse<ContactRiskResponse>(request, cancellationToken);
         var result = response.Message.ContactStatus.ToString();
         return Json(result);
     }

@@ -8,6 +8,16 @@
         }
     })
 }
+function ScheduledContact(){
+    $.ajax({
+        url:'/Contact/SendScheduledMessage/',
+        success:function(e){
+            if(e==="ok"){
+                $("#result").text("new contact added after 10 sec");
+            }
+        }
+    })
+}
 
 function addNewOrder(){
     $.ajax({

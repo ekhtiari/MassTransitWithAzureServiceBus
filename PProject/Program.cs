@@ -14,6 +14,8 @@ builder.Services.AddMassTransit(x =>
     x.UsingAzureServiceBus((context, config) =>
     {
         config.Host(bussConnection);
+        
+        config.UseServiceBusMessageScheduler();
        
         config.ConfigureEndpoints(context);
         
