@@ -1,4 +1,6 @@
+using System.Reflection;
 using DomainShare;
+using DomainShare.Bank;
 using DomainShare.RequestInformation;
 using MassTransit;
 using PProject.Log;
@@ -10,6 +12,13 @@ var bussConnection = builder.Configuration["AzureServiceBusConnection"];
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
+    
+    var entryAssembly = Assembly.GetEntryAssembly();
+    
+    x.AddSagaStateMachines(entryAssembly);
+    x.AddSagas(entryAssembly);
+    x.AddActivities(entryAssembly);
+    
     
     x.UsingAzureServiceBus((context, config) =>
     {
@@ -31,7 +40,17 @@ builder.Services.AddMassTransit(x =>
         {
             y.SetEntityName("ComplyAdvantage-Topic-Request_Information");
         });
+        config.Send<BankAccount>(y => y.UseSessionIdFormatter(c => c.Message.SessionId.ToString()));
+        config.Message<BankAccount>(y =>
+        {
+            y.SetEntityName("ComplyAdvantage-Topic-BankAccount");
+        });
+        
+       
     });
+    
+   
+    
     x.AddConsumer<LogEvent>();
    
 });

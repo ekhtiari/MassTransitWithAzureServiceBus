@@ -1,6 +1,8 @@
+using System.Reflection;
 using CProject.Event;
 using CProject.Response;
 using DomainShare;
+using DomainShare.Bank;
 using DomainShare.RequestInformation;
 using MassTransit;
 
@@ -17,6 +19,13 @@ builder.Services.AddMassTransit(x =>
         cfg.Name = "Compliance_Advantage_Request_Queue";
     });
     x.AddConsumer<Consumer>();
+    x.AddConsumer<BankAccountConsumer>();
+    
+    var entryAssembly = Assembly.GetEntryAssembly();
+    
+    x.AddSagaStateMachines(entryAssembly);
+    x.AddSagas(entryAssembly);
+    x.AddActivities(entryAssembly);
     
     x.UsingAzureServiceBus((context, config) =>
     {
@@ -32,6 +41,14 @@ builder.Services.AddMassTransit(x =>
         {
            e.ConfigureConsumer<Consumer>(context);
         });
+        
+        config.SubscriptionEndpoint("ComplyAdvantage-Subscription", "ComplyAdvantage-Topic-BankAccount",e =>
+        {
+            e.RequiresSession = true;
+            e.Consumer<BankAccountConsumer>();
+        });
+        
+        config.ConfigureEndpoints(context);
         
     });
 x.AddRequestClient<RequestInformation>();

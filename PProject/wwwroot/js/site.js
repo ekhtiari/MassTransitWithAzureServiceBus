@@ -39,3 +39,12 @@ function getResult(){
         }
     })
 }
+
+function publishBankAccounts(){
+    $.ajax({
+        url:'/BankAccount/Send/',
+        success:function(e){
+            $("#result").text(e);
+        }
+    })
+}
